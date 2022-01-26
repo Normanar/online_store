@@ -28,11 +28,23 @@ class UserController {
         const user = await User.create({email, role, password: hashPassword})
         const basket = await Basket.create({userId: user.id})
         const token = generateJWT(user.id, user.email, user.role)
-        return res.json(token)
+        return res.json({token})
     }
 
-    async login(req, res) {
+    async login(req, res, next) {
+        const {email, password} = req.body
+        const user = await User.findOne({where : {email}})
+        if (!user) {
+            return next(ApiError.internal('Пользователь не найден!'))
+        }
+        let comparePassword = bcrypt.compareSync(password, user.password)
 
+        if (!comparePassword) {
+            return next(ApiError.internal('Пароль неверный!'))
+        }
+
+        const token = generateJWT(user.id, user.email, user.role)
+        return res.json({token})
     }
 
     async auth(req, res, next) {
