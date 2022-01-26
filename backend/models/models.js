@@ -75,7 +75,7 @@ Rating.belongsTo(Device)
 Device.hasMany(BasketDevice)
 BasketDevice.belongsTo(Device)
 
-Device.hasMany(DeviceInfo)
+Device.hasMany(DeviceInfo, {as : 'info'})
 DeviceInfo.belongsTo(Device)
 
 // при связи "многим ко многим", создается промежуточная таблица, в которой хранится информация о том какой бренд
