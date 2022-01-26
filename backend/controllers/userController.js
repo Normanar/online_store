@@ -13,10 +13,10 @@ class UserController {
     async auth(req, res, next) {
         const {id} = req.query
         if (!id) {
-            return next(ApiError.badRequest('Нет ID'))
+            return next(ApiError.badRequest('Не задан ID'))
         }
 
-        res.json(req.query)
+        res.json(id)
     }
 }
 
